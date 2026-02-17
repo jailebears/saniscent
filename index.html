@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SaniScents — Cooling Baby Cologne</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,800;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --mint: #b8e0d2;
+      --deep-mint: #5aac90;
+      --forest: #2d6a52;
+      --sage: #7ab5a0;
+      --cream: #f7faf8;
+      --white: #ffffff;
+      --text: #1e3a30;
+      --text-light: #5a7a6e;
+      --lavender: #c8b8d8;
+      --lavender-deep: #8a6aa8;
+      --gold: #d4a843;
+      --leaf: #4a8c5c;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 18px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(247,250,248,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(184,224,210,0.3);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--forest);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span {
+      font-style: italic;
+      color: var(--deep-mint);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--forest); }
+
+    .nav-cta {
+      background: var(--forest);
+      color: white !important;
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-size: 12px !important;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--deep-mint) !important; transform: scale(1.03); }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 100px 60px 60px;
+      position: relative;
+      overflow: hidden;
+      gap: 40px;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(184,224,210,0.35) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 20% 80%, rgba(200,184,216,0.2) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.8), rgba(184,224,210,0.3));
+      border: 1px solid rgba(184,224,210,0.4);
+      animation: floatBubble var(--dur, 8s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+    @keyframes floatBubble {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
+      50% { transform: translateY(-30px) scale(1.05); opacity: 0.7; }
+    }
+
+    .leaf {
+      position: absolute;
+      width: var(--size, 50px);
+      height: var(--size, 50px);
+      opacity: 0.15;
+      animation: spinLeaf var(--dur, 20s) linear infinite;
+    }
+    @keyframes spinLeaf {
+      from { transform: rotate(0deg) translateY(0); }
+      to { transform: rotate(360deg) translateY(-20px); }
+    }
+
+    .hero-left {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(90,172,144,0.15);
+      border: 1px solid rgba(90,172,144,0.3);
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--forest);
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.2s forwards;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--deep-mint);
+      animation: pulse 1.5s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+
+    .hero-brand {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.35s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(44px, 5vw, 72px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 12px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.5s forwards;
+    }
+
+    .hero-title .italic { font-style: italic; color: var(--deep-mint); }
+
+    .hero-subtitle {
+      font-size: 19px;
+      font-weight: 300;
+      color: var(--text-light);
+      line-height: 1.55;
+      margin-bottom: 40px;
+      max-width: 440px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.65s forwards;
+    }
+
+    .hero-subtitle strong { color: var(--forest); font-weight: 600; }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.8s forwards;
+    }
+
+    .btn-primary {
+      background: var(--forest);
+      color: white;
+      padding: 16px 36px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(45,106,82,0.3);
+    }
+    .btn-primary:hover { background: var(--deep-mint); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(45,106,82,0.35); }
+
+    .btn-secondary {
+      color: var(--forest);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px solid var(--deep-mint);
+      padding-bottom: 2px;
+      transition: opacity 0.2s;
+    }
+    .btn-secondary:hover { opacity: 0.6; }
+
+    .hero-right {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bottle-stage {
+      position: relative;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .bottle-glow {
+      position: absolute;
+      inset: -40px;
+      background: radial-gradient(ellipse at center, rgba(184,224,210,0.5) 0%, transparent 70%);
+      pointer-events: none;
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.08); }
+    }
+
+    .bottle-video-wrap {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #3a3a3a;
+      box-shadow:
+        0 40px 80px rgba(0,0,0,0.2),
+        0 0 0 1px rgba(184,224,210,0.2);
+      opacity: 0;
+      animation: fadeIn 1s ease 1s forwards;
+    }
+
+    .bottle-video-wrap video {
+      width: 100%;
+      display: block;
+    }
+
+    .float-badge {
+      position: absolute;
+      background: white;
+      border-radius: 16px;
+      padding: 12px 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: floatBadge 4s ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+      z-index: 10;
+    }
+
+    @keyframes floatBadge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .float-badge .badge-icon { font-size: 20px; }
+    .float-badge .badge-text { font-size: 11px; color: var(--text-light); font-weight: 400; }
+
+    .badge-1 { top: 10%; right: -30px; }
+    .badge-2 { bottom: 20%; left: -30px; }
+    .badge-3 { bottom: 5%; right: -20px; }
+
+    .bottle-shadow {
+      width: 60%;
+      height: 20px;
+      background: radial-gradient(ellipse, rgba(0,0,0,0.15), transparent);
+      margin: 0 auto;
+      border-radius: 50%;
+    }
+
+    .scents-section {
+      padding: 100px 60px;
+      text-align: center;
+      background: white;
+    }
+
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--deep-mint);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-title em { font-style: italic; color: var(--deep-mint); }
+
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--text-light);
+      max-width: 500px;
+      margin: 0 auto 64px;
+      line-height: 1.6;
+    }
+
+    .scents-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .scent-card {
+      border-radius: 24px;
+      padding: 48px 40px;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .scent-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(0,0,0,0.12); }
+
+    .scent-card.olive {
+      background: linear-gradient(135deg, #e8f5ef 0%, #c8e8dc 100%);
+      border: 1px solid rgba(90,172,144,0.2);
+    }
+
+    .scent-card.lavender {
+      background: linear-gradient(135deg, #f0ecf8 0%, #ddd0f0 100%);
+      border: 1px solid rgba(138,106,168,0.2);
+    }
+
+    .scent-icon {
+      font-size: 52px;
+      margin-bottom: 20px;
+      display: block;
+      animation: iconBounce 3s ease-in-out infinite;
+    }
+    @keyframes iconBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .scent-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .scent-tagline {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .scent-card.olive .scent-tagline { color: var(--deep-mint); }
+    .scent-card.lavender .scent-tagline { color: var(--lavender-deep); }
+
+    .scent-desc {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-light);
+    }
+
+    .scent-card-decor {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      font-size: 120px;
+      opacity: 0.08;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* ===== FEATURES ===== */
+    .features-section {
+      padding: 100px 60px;
+      background: var(--cream);
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 32px;
+      text-align: center;
+      border: 1px solid rgba(184,224,210,0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(45,106,82,0.1);
+      border-color: var(--mint);
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--deep-mint), var(--sage));
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+    .feature-card:hover::before { transform: scaleX(1); }
+
+    .feature-icon {
+      font-size: 40px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .feature-title {
+      font-weight: 800;
+      font-size: 17px;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-light);
+    }
+
+    .showcase-section {
+      padding: 100px 60px;
+      background: var(--forest);
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .showcase-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 30% 50%, rgba(90,172,144,0.2) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 50%, rgba(200,184,216,0.1) 0%, transparent 60%);
+    }
+
+    .showcase-section .section-eyebrow { color: rgba(255,255,255,0.5); }
+    .showcase-section .section-title { color: white; }
+    .showcase-section .section-subtitle { color: rgba(255,255,255,0.6); max-width: 500px; }
+
+    .showcase-video-frame {
+      position: relative;
+      max-width: 320px;
+      margin: 0 auto 48px;
+      z-index: 1;
+    }
+
+    .showcase-ring {
+      position: absolute;
+      inset: -24px;
+      border-radius: 50%;
+      border: 1px solid rgba(184,224,210,0.2);
+      animation: expandRing 3s ease-out infinite;
+    }
+    .showcase-ring:nth-child(2) { inset: -48px; animation-delay: 1s; }
+    .showcase-ring:nth-child(3) { inset: -72px; animation-delay: 2s; }
+
+    @keyframes expandRing {
+      0% { opacity: 0.6; transform: scale(0.95); }
+      100% { opacity: 0; transform: scale(1.1); }
+    }
+
+    .showcase-video-inner {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      background: #2a2a2a;
+      position: relative;
+      z-index: 2;
+    }
+
+    .showcase-video-inner video {
+      width: 100%;
+      display: block;
+    }
+
+    .showcase-powered {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .showcase-powered span {
+      color: var(--mint);
+      font-weight: 800;
+    }
+
+    .ingredients-section {
+      padding: 80px 60px;
+      background: white;
+    }
+
+    .ingredients-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .ingredients-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .ingredient-pill {
+      padding: 12px 24px;
+      background: var(--cream);
+      border: 1.5px solid rgba(184,224,210,0.5);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .ingredient-pill:hover {
+      background: var(--mint);
+      border-color: var(--deep-mint);
+      transform: scale(1.03);
+    }
+
+    .cta-section {
+      padding: 120px 60px;
+      background: linear-gradient(135deg, #e8f5ef 0%, #f0ecf8 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '🌿';
+      position: absolute;
+      font-size: 200px;
+      top: -40px; left: -40px;
+      opacity: 0.05;
+    }
+
+    .cta-section::after {
+      content: '🌸';
+      position: absolute;
+      font-size: 200px;
+      bottom: -40px; right: -40px;
+      opacity: 0.05;
+    }
+
+    .cta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+
+    .cta-title em { font-style: italic; color: var(--deep-mint); }
+
+    .cta-subtitle {
+      font-size: 18px;
+      color: var(--text-light);
+      max-width: 480px;
+      margin: 0 auto 48px;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--forest);
+      color: white;
+      padding: 20px 48px;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 16px 40px rgba(45,106,82,0.3);
+      position: relative;
+    }
+
+    .cta-btn:hover {
+      background: var(--deep-mint);
+      transform: translateY(-3px);
+      box-shadow: 0 20px 50px rgba(45,106,82,0.35);
+    }
+
+    footer {
+      background: var(--text);
+      color: rgba(255,255,255,0.6);
+      padding: 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 12px;
+    }
+
+    .footer-brand span { color: var(--mint); font-style: italic; }
+
+    .footer-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.45);
+    }
+
+    .footer-col-title {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: white; }
+
+    .footer-bottom {
+      background: var(--text);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .scroll-down {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      opacity: 0;
+      animation: fadeIn 1s ease 1.5s forwards;
+      cursor: pointer;
+      z-index: 5;
+    }
+
+    .scroll-arrow {
+      width: 20px;
+      height: 30px;
+      border: 2px solid var(--sage);
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .scroll-arrow::after {
+      content: '';
+      position: absolute;
+      top: 6px; left: 50%;
+      transform: translateX(-50%);
+      width: 4px; height: 6px;
+      background: var(--deep-mint);
+      border-radius: 2px;
+      animation: scrollBounce 1.5s ease infinite;
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { top: 6px; opacity: 1; }
+      50% { top: 14px; opacity: 0.3; }
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; text-align: center; }
+      .hero-subtitle { margin: 0 auto 40px; }
+      .hero-cta-group { justify-content: center; }
+      .badge-1, .badge-2, .badge-3 { display: none; }
+      .scents-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .scents-section, .features-section, .showcase-section,
+      .ingredients-section, .cta-section { padding: 72px 24px; }
+      footer { grid-template-columns: 1fr; padding: 40px 24px; }
+      .footer-bottom { flex-direction: column; gap: 8px; padding: 16px 24px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Sani<span>Scents</span></div>
+  <ul class="nav-links">
+    <li><a href="#scents">Scents</a></li>
+    <li><a href="#features">Benefits</a></li>
+    <li><a href="#ingredients">Ingredients</a></li>
+    <li><a href="#shop" class="nav-cta">Shop Now</a></li>
+  </ul>
+</nav>
+
+
+<section class="hero">
+
+  <div class="bubble" style="width:80px;height:80px;top:15%;left:5%;--dur:7s;--delay:0s"></div>
+  <div class="bubble" style="width:40px;height:40px;top:60%;left:8%;--dur:9s;--delay:1s"></div>
+  <div class="bubble" style="width:60px;height:60px;top:30%;right:5%;--dur:8s;--delay:2s"></div>
+  <div class="bubble" style="width:24px;height:24px;top:80%;right:10%;--dur:6s;--delay:0.5s"></div>
+  <div class="bubble" style="width:90px;height:90px;bottom:10%;left:15%;--dur:10s;--delay:3s"></div>
+
+  <div class="hero-left">
+    <div class="hero-badge">🧊 New · Cooling Formula</div>
+    <div class="hero-brand">Powered by Therese Fragrance</div>
+    <h1 class="hero-title">
+      Stay Fresh,<br>Stay <span class="italic">Cool.</span>
+    </h1>
+    <p class="hero-subtitle">
+      Beat the heat and smell irresistibly good all day with our
+      <strong>peppermint-infused</strong> cooling baby cologne — gentle, skin-friendly, and long-lasting.
+    </p>
+    <div class="hero-cta-group">
+      <a href="#shop" class="btn-primary">🛒 Grab Yours Now →</a>
+      <a href="#scents" class="btn-secondary">See Scents ↓</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="bottle-stage">
+      <div class="bottle-glow"></div>
+      <div class="bottle-video-wrap">
+        <video autoplay loop muted playsinline>
+          <source src="saniscents-bottle.mp4" type="video/mp4"/>
+        </video>
+      </div>
+
+      <div class="float-badge badge-1" style="--delay:0s">
+        <span class="badge-icon">❄️</span>
+        <div>
+          <div>Cooling Effect</div>
+          <div class="badge-text">Peppermint-infused</div>
+        </div>
+      </div>
+      <div class="float-badge badge-2" style="--delay:1s">
+        <span class="badge-icon">👶</span>
+        <div>
+          <div>Baby Safe</div>
+          <div class="badge-text">Skin-friendly formula</div>
+        </div>
+      </div>
+      <div class="float-badge badge-3" style="--delay:2s">
+        <span class="badge-icon">🌿</span>
+        <div>
+          <div>50 ml</div>
+          <div class="badge-text">Long-lasting scent</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-down" onclick="document.getElementById('scents').scrollIntoView({behavior:'smooth'})">
+    <div class="scroll-arrow"></div>
+    Scroll
+  </div>
+</section>
+
+<section class="scents-section" id="scents">
+  <div class="section-eyebrow">Available Variants</div>
+  <h2 class="section-title reveal">Our <em>Signature</em> Scents</h2>
+  <p class="section-subtitle reveal">Two carefully crafted fragrances for every mood, every day.</p>
+
+  <div class="scents-grid">
+    <div class="scent-card olive reveal">
+      <span class="scent-icon">🫒</span>
+      <div class="scent-name">Olive &amp; Milk</div>
+      <div class="scent-tagline">Caress Edition</div>
+      <p class="scent-desc">Soft, soothing, and deeply refreshing. A delicate blend of nourishing olive and creamy milk wrapped in a whisper of cool peppermint — perfect for everyday gentleness.</p>
+      <div class="scent-card-decor">🫒</div>
+    </div>
+    <div class="scent-card lavender reveal">
+      <span class="scent-icon">💜</span>
+      <div class="scent-name">Lavender Caress</div>
+      <div class="scent-tagline">Calm Edition</div>
+      <p class="scent-desc">Calm, gentle, and beautifully relaxing. Lavender's timeless tranquility blended with a hint of refreshing cool — lifting your mood while soothing your senses.</p>
+      <div class="scent-card-decor">💜</div>
+    </div>
+  </div>
+</section>
+
+<section class="features-section" id="features">
+  <div class="features-header">
+    <div class="section-eyebrow">Why You'll Love It</div>
+    <h2 class="section-title reveal">Made for <em>Real Life</em></h2>
+    <p class="section-subtitle reveal">Whether you're out and about or chilling at home, SaniScents keeps you cool, clean, and confident.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <span class="feature-icon">❄️</span>
+      <div class="feature-title">Cooling Formula</div>
+      <p class="feature-desc">A touch of peppermint extract delivers an instant cooling sensation — beat the heat beautifully, any time of day.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon">🌸</span>
+      <div class="feature-title">Gentle &amp; Skin-Friendly</div>
+      <p class="feature-desc">Formulated to be safe and gentle for everyday use, even on the most sensitive skin. Ideal for babies and the whole family.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon">✨</span>
+      <div class="feature-title">Long-Lasting Scent</div>
+      <p class="feature-desc">Not just a fragrance — a mood lift. A single spray that lingers beautifully and keeps you feeling fresh for hours.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon">🌿</span>
+      <div class="feature-title">Natural Ingredients</div>
+      <p class="feature-desc">Deionized water, sugarcane acid, peppermint extract, and essential oils — nothing harsh, nothing you don't need.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon">🏠</span>
+      <div class="feature-title">Any Occasion</div>
+      <p class="feature-desc">At home or out and about — SaniScents effortlessly fits into every moment of your day.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon">💧</span>
+      <div class="feature-title">Light &amp; Portable</div>
+      <p class="feature-desc">50 ml of pure freshness in a sleek, elegant spray bottle — easy to carry, impossible to forget.</p>
+    </div>
+  </div>
+</section>
+
+<section class="showcase-section">
+  <div class="section-eyebrow">360° 3D Render</div>
+  <h2 class="section-title reveal">See It From <em>Every Angle</em></h2>
+  <p class="section-subtitle reveal">A fully rendered 3D model — built in Blender 4.01, showcasing every detail of the bottle design.</p>
+
+  <div class="showcase-video-frame reveal">
+    <div class="showcase-ring"></div>
+    <div class="showcase-ring"></div>
+    <div class="showcase-ring"></div>
+    <div class="showcase-video-inner">
+      <video autoplay loop muted playsinline>
+        <source src="saniscents-bottle.mp4" type="video/mp4"/>
+      </video>
+    </div>
+  </div>
+
+  <div class="showcase-powered">
+    Rendered with <span>Blender 4.01 · EEVEE</span>
+  </div>
+</section>
+
+<section class="ingredients-section" id="ingredients">
+  <div class="ingredients-header">
+    <div class="section-eyebrow">What's Inside</div>
+    <h2 class="section-title reveal">Clean. <em>Transparent.</em> Real.</h2>
+    <p class="section-subtitle reveal" style="margin: 0 auto;">Every ingredient, carefully chosen. Every drop, made with intention.</p>
+  </div>
+  <div class="ingredients-list reveal">
+    <div class="ingredient-pill">💧 Deionized Water</div>
+    <div class="ingredient-pill">🌾 Sugarcane Acid</div>
+    <div class="ingredient-pill">🧪 Dipropylene Glycol (DPG)</div>
+    <div class="ingredient-pill">🌿 Peppermint Extract</div>
+    <div class="ingredient-pill">🌸 Essential Oils</div>
+    <div class="ingredient-pill">💊 Fixative</div>
+  </div>
+</section>
+
+<section class="cta-section" id="shop">
+  <h2 class="cta-title">Share the <em>Freshness.</em></h2>
+  <p class="cta-subtitle">Grab yours now and discover the cooling difference. SaniScents — because every day deserves a little cool.</p>
+  <a href="#" class="cta-btn">🛒 Order Now — Stay Fresh!</a>
+  <div style="margin-top:32px; font-size:13px; color:var(--text-light);">
+    Available in <strong>Olive &amp; Milk</strong> and <strong>Lavender Caress</strong>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="footer-brand">Sani<span>Scents</span></div>
+    <p class="footer-desc">Cooling Baby Cologne — gentle, refreshing, and made with love. Powered by Therese Fragrance.</p>
+  </div>
+  <div>
+    <div class="footer-col-title">Product</div>
+    <ul class="footer-links">
+      <li><a href="#scents">Our Scents</a></li>
+      <li><a href="#features">Benefits</a></li>
+      <li><a href="#ingredients">Ingredients</a></li>
+      <li><a href="#shop">Shop</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">About</div>
+    <ul class="footer-links">
+      <li><a href="#">Therese Fragrance</a></li>
+      <li><a href="#">Our Story</a></li>
+      <li><a href="#">Contact Us</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2026 SaniScents by Therese Fragrance. All rights reserved.</span>
+  <span>Stay Fresh. Stay Cool. ❄️🌿</span>
+</div>
+
+<script>
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), 80 * (Array.from(reveals).indexOf(entry.target) % 5));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.boxShadow = window.scrollY > 20 ? '0 4px 24px rgba(0,0,0,0.08)' : 'none';
+  });
+</script>
+</body>
+</html>
