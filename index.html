@@ -1669,7 +1669,7 @@
 
   function validatePhone() {
     const val = document.getElementById('customerContact').value.trim();
-    const valid = /^(09|+639)d{9}$/.test(val.replace(/s/g, ''));
+    const valid = /^(09|\+639)\d{9}$/.test(val.replace(/\s/g, ""));
     document.getElementById('phoneError').style.display = val.length > 3 && !valid ? 'block' : 'none';
     return valid;
   }
