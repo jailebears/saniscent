@@ -19,7 +19,6 @@ exports.handler = async (event) => {
     if (!orderId || !text)
       return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'Missing orderId or text' }) };
 
-    // Admin must provide correct key
     if (sender === 'admin' && (event.headers['x-admin-key'] || '') !== ADMIN_KEY)
       return { statusCode: 401, headers: cors, body: JSON.stringify({ error: 'Unauthorized' }) };
 
