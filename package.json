@@ -1,0 +1,8 @@
+{
+  "name": "saniscents-backend",
+  "version": "1.0.0",
+  "description": "SaniScents order management backend",
+  "dependencies": {
+    "@netlify/blobs": "^7.0.0"
+  }
+}
