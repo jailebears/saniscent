@@ -1593,7 +1593,7 @@
       const preview = last ? last.text : 'No messages yet';
       const time = last ? formatTime(last.created_at) : '';
       const isActive = activeThread === o.id ? 'active' : '';
-      return '<div class="thread-item ' + isActive + '" onclick="openThread('' + o.id + '')">' +
+      return '<div class="thread-item ' + isActive + '" onclick="openThread(&quot;' + o.id + '&quot;)">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;">' +
         '<div class="thread-name">' + esc(o.name) + '</div>' +
         '<div class="thread-time">' + time + '</div></div>' +
