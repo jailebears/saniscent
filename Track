@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Track My Order — SaniScents</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --mint: #b8e0d2;
+      --deep-mint: #5aac90;
+      --forest: #2d6a52;
+      --cream: #f7faf8;
+      --white: #ffffff;
+      --text: #1e3a30;
+      --text-light: #5a7a6e;
+      --lavender: #c8b8d8;
+      --lavender-deep: #8a6aa8;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(247,250,248,0.95);
+      backdrop-filter: blur(12px);
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(184,224,210,0.3);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--forest); text-decoration: none; }
+    .nav-logo span { color: var(--lavender-deep); }
+    .nav-back { font-size: 13px; font-weight: 700; color: var(--forest); text-decoration: none; display: flex; align-items: center; gap: 6px; padding: 8px 18px; border: 1.5px solid rgba(184,224,210,0.6); border-radius: 100px; transition: all 0.2s; }
+    .nav-back:hover { background: var(--mint); border-color: var(--deep-mint); }
+
+    /* MAIN */
+    .page-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--forest);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .page-sub {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 15px;
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    /* LOOKUP CARD */
+    .lookup-card {
+      background: white;
+      border-radius: 24px;
+      padding: 36px 40px;
+      box-shadow: 0 4px 24px rgba(45,106,82,0.08);
+      border: 1px solid rgba(184,224,210,0.3);
+      margin-bottom: 28px;
+    }
+    .lookup-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-light);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .lookup-input-row {
+      display: flex;
+      gap: 10px;
+    }
+    .lookup-input {
+      flex: 1;
+      padding: 14px 18px;
+      border: 1.5px solid rgba(184,224,210,0.5);
+      border-radius: 14px;
+      font-size: 15px;
+      font-family: 'Nunito', sans-serif;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      background: var(--cream);
+    }
+    .lookup-input:focus { border-color: var(--deep-mint); background: white; }
+    .lookup-btn {
+      padding: 14px 24px;
+      background: var(--forest);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 800;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .lookup-btn:hover { background: var(--deep-mint); transform: translateY(-1px); }
+    .lookup-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .lookup-error { margin-top: 12px; font-size: 13px; color: #c0392b; font-weight: 700; display: none; }
+
+    /* ORDER CARD */
+    .order-card {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 4px 24px rgba(45,106,82,0.08);
+      border: 1px solid rgba(184,224,210,0.3);
+      overflow: hidden;
+      display: none;
+      animation: slideUp 0.35s cubic-bezier(0.34,1.2,0.64,1);
+    }
+    @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    .order-card-header {
+      background: linear-gradient(135deg, #1a3a2a 0%, var(--forest) 100%);
+      padding: 28px 32px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .order-id-label { font-size: 11px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.7; margin-bottom: 4px; }
+    .order-id-value { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+    .order-date { font-size: 12px; opacity: 0.7; margin-top: 4px; }
+
+    .status-pill {
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .status-pending   { background: #fef3cd; color: #856404; }
+    .status-confirmed { background: #cce5ff; color: #004085; }
+    .status-shipped   { background: #d4edda; color: #155724; }
+    .status-fulfilled { background: #d1f2eb; color: #0e6655; }
+    .status-cancelled { background: #f8d7da; color: #721c24; }
+
+    /* TRACKER STEPS */
+    .tracker {
+      padding: 28px 32px;
+      border-bottom: 1px solid rgba(184,224,210,0.2);
+    }
+    .tracker-title { font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 20px; }
+    .tracker-steps {
+      display: flex;
+      align-items: flex-start;
+      position: relative;
+    }
+    .tracker-step {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .tracker-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      width: 100%;
+      height: 3px;
+      background: rgba(184,224,210,0.4);
+      z-index: 0;
+    }
+    .tracker-step.done:not(:last-child)::after { background: var(--forest); }
+    .tracker-step.active:not(:last-child)::after { background: linear-gradient(to right, var(--forest), rgba(184,224,210,0.4)); }
+
+    .step-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      background: rgba(184,224,210,0.3);
+      border: 2px solid rgba(184,224,210,0.5);
+      margin-bottom: 8px;
+      transition: all 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+    .tracker-step.done .step-dot {
+      background: var(--forest);
+      border-color: var(--forest);
+      box-shadow: 0 0 0 4px rgba(45,106,82,0.15);
+    }
+    .tracker-step.active .step-dot {
+      background: white;
+      border-color: var(--forest);
+      border-width: 3px;
+      box-shadow: 0 0 0 4px rgba(45,106,82,0.15);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse { 0%,100% { box-shadow: 0 0 0 4px rgba(45,106,82,0.15); } 50% { box-shadow: 0 0 0 8px rgba(45,106,82,0.08); } }
+    .tracker-step.cancelled .step-dot { background: #f8d7da; border-color: #721c24; }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-align: center;
+      line-height: 1.3;
+    }
+    .tracker-step.done .step-label { color: var(--forest); }
+    .tracker-step.active .step-label { color: var(--forest); font-weight: 800; }
+
+    /* ORDER DETAILS */
+    .order-details {
+      padding: 24px 32px;
+      border-bottom: 1px solid rgba(184,224,210,0.2);
+    }
+    .details-title { font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 16px; }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(184,224,210,0.1);
+      gap: 16px;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-key { font-size: 13px; color: var(--text-light); font-weight: 600; flex-shrink: 0; }
+    .detail-val { font-size: 13px; color: var(--text); font-weight: 700; text-align: right; }
+
+    /* CHAT */
+    .chat-section {
+      padding: 24px 32px;
+    }
+    .chat-section-title { font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 16px; }
+    .chat-messages-box {
+      min-height: 120px;
+      max-height: 260px;
+      overflow-y: auto;
+      border: 1.5px solid rgba(184,224,210,0.4);
+      border-radius: 16px;
+      padding: 16px;
+      background: var(--cream);
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .chat-empty-msg { text-align: center; color: var(--text-light); font-size: 13px; padding: 20px 0; }
+    .msg-wrap-c { display: flex; flex-direction: column; align-items: flex-end; }
+    .msg-wrap-a { display: flex; flex-direction: column; align-items: flex-start; }
+    .msg-sender-label { font-size: 10px; font-weight: 700; color: var(--text-light); margin-bottom: 3px; }
+    .bubble-c {
+      background: var(--forest);
+      color: white;
+      padding: 9px 14px;
+      border-radius: 16px;
+      border-bottom-right-radius: 4px;
+      font-size: 13px;
+      max-width: 80%;
+      word-break: break-word;
+      line-height: 1.5;
+    }
+    .bubble-a {
+      background: white;
+      color: var(--text);
+      border: 1px solid rgba(184,224,210,0.5);
+      padding: 9px 14px;
+      border-radius: 16px;
+      border-bottom-left-radius: 4px;
+      font-size: 13px;
+      max-width: 80%;
+      word-break: break-word;
+      line-height: 1.5;
+    }
+    .msg-ts { font-size: 10px; color: var(--text-light); margin-top: 3px; }
+    .chat-input-wrap {
+      display: flex;
+      gap: 10px;
+    }
+    .chat-msg-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1.5px solid rgba(184,224,210,0.5);
+      border-radius: 100px;
+      font-size: 14px;
+      font-family: 'Nunito', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+      background: white;
+    }
+    .chat-msg-input:focus { border-color: var(--deep-mint); }
+    .chat-msg-btn {
+      padding: 12px 20px;
+      background: var(--forest);
+      color: white;
+      border: none;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 800;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .chat-msg-btn:hover { background: var(--deep-mint); }
+    .chat-msg-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* EMPTY STATE */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-light);
+      display: none;
+    }
+    .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .empty-sub { font-size: 14px; line-height: 1.6; }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 20px; }
+      .page-wrap { padding: 40px 16px 60px; }
+      .lookup-card { padding: 24px 20px; }
+      .lookup-input-row { flex-direction: column; }
+      .order-card-header { flex-direction: column; gap: 12px; }
+      .order-details, .tracker, .chat-section { padding: 20px 20px; }
+      .tracker-step .step-label { font-size: 10px; }
+      .page-title { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Sani<span>Scents</span></a>
+  <a class="nav-back" href="index.html">← Back to Shop</a>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-title">📦 Track My Order</div>
+  <p class="page-sub">Enter your Order ID to see your order status and message the seller.</p>
+
+  <!-- Lookup -->
+  <div class="lookup-card">
+    <div class="lookup-label">Your Order ID</div>
+    <div class="lookup-input-row">
+      <input class="lookup-input" id="orderIdInput" type="text" placeholder="e.g. ORD-1234567890-ABC12" onkeydown="if(event.key==='Enter') trackOrder()"/>
+      <button class="lookup-btn" id="trackBtn" onclick="trackOrder()">🔍 Track</button>
+    </div>
+    <div class="lookup-error" id="lookupError">⚠️ Order not found. Please check your Order ID and try again.</div>
+  </div>
+
+  <!-- Result -->
+  <div class="order-card" id="orderCard">
+
+    <div class="order-card-header">
+      <div>
+        <div class="order-id-label">Order ID</div>
+        <div class="order-id-value" id="resOrderId">—</div>
+        <div class="order-date" id="resDate">—</div>
+      </div>
+      <div class="status-pill" id="resStatusPill">—</div>
+    </div>
+
+    <!-- Tracker -->
+    <div class="tracker">
+      <div class="tracker-title">Order Progress</div>
+      <div class="tracker-steps" id="trackerSteps">
+        <div class="tracker-step" id="step-pending">
+          <div class="step-dot">📋</div>
+          <div class="step-label">Order<br>Placed</div>
+        </div>
+        <div class="tracker-step" id="step-confirmed">
+          <div class="step-dot">✅</div>
+          <div class="step-label">Confirmed</div>
+        </div>
+        <div class="tracker-step" id="step-shipped">
+          <div class="step-dot">🚚</div>
+          <div class="step-label">Shipped</div>
+        </div>
+        <div class="tracker-step" id="step-fulfilled">
+          <div class="step-dot">🎉</div>
+          <div class="step-label">Delivered</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Details -->
+    <div class="order-details">
+      <div class="details-title">Order Details</div>
+      <div class="detail-row"><span class="detail-key">Name</span><span class="detail-val" id="resName">—</span></div>
+      <div class="detail-row"><span class="detail-key">Scent</span><span class="detail-val" id="resScent">—</span></div>
+      <div class="detail-row"><span class="detail-key">Package</span><span class="detail-val" id="resQty">—</span></div>
+      <div class="detail-row"><span class="detail-key">Location</span><span class="detail-val" id="resLocation">—</span></div>
+      <div class="detail-row"><span class="detail-key">Address</span><span class="detail-val" id="resAddress">—</span></div>
+      <div class="detail-row"><span class="detail-key">Mode of Payment</span><span class="detail-val">Cash on Delivery</span></div>
+    </div>
+
+    <!-- Chat -->
+    <div class="chat-section">
+      <div class="chat-section-title">💬 Message the Seller</div>
+      <div class="chat-messages-box" id="chatBox">
+        <div class="chat-empty-msg">No messages yet. Send us a message below!</div>
+      </div>
+      <div class="chat-input-wrap">
+        <input class="chat-msg-input" id="chatInput" type="text" placeholder="Type your message..." onkeydown="if(event.key==='Enter') sendMsg()"/>
+        <button class="chat-msg-btn" id="sendBtn" onclick="sendMsg()">Send ➤</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Not found state (shown after bad lookup) -->
+  <div class="empty-state" id="emptyState">
+    <div class="empty-icon">🔍</div>
+    <div class="empty-title">Order Not Found</div>
+    <div class="empty-sub">We couldn't find an order with that ID.<br>Double-check your Order ID from your confirmation screen.</div>
+  </div>
+
+</div>
+
+<script>
+  var currentOrderId = null;
+  var pollInterval = null;
+
+  // STATUS CONFIG
+  var STATUS_STEPS = ['pending', 'confirmed', 'shipped', 'fulfilled'];
+  var STATUS_LABELS = { pending: 'Order Placed', confirmed: 'Confirmed', shipped: 'Shipped', fulfilled: 'Delivered', cancelled: 'Cancelled' };
+  var STATUS_CLASSES = { pending: 'status-pending', confirmed: 'status-confirmed', shipped: 'status-shipped', fulfilled: 'status-fulfilled', cancelled: 'status-cancelled' };
+  var STATUS_EMOJIS = { pending: '⏳', confirmed: '✅', shipped: '🚚', fulfilled: '🎉', cancelled: '❌' };
+
+  // Check URL for orderId param on load
+  window.addEventListener('load', function() {
+    var params = new URLSearchParams(window.location.search);
+    var id = params.get('orderId');
+    if (id) {
+      document.getElementById('orderIdInput').value = id;
+      trackOrder();
+    }
+  });
+
+  async function trackOrder() {
+    var raw = document.getElementById('orderIdInput').value.trim();
+    if (!raw) return;
+
+    var btn = document.getElementById('trackBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Looking up...';
+    document.getElementById('lookupError').style.display = 'none';
+    document.getElementById('orderCard').style.display = 'none';
+    document.getElementById('emptyState').style.display = 'none';
+
+    try {
+      var res = await fetch('/.netlify/functions/track-order?orderId=' + encodeURIComponent(raw));
+      var data = await res.json();
+
+      if (!data.order) {
+        document.getElementById('lookupError').style.display = 'block';
+        document.getElementById('emptyState').style.display = 'block';
+      } else {
+        currentOrderId = raw;
+        renderOrder(data.order);
+        await loadMessages();
+        document.getElementById('orderCard').style.display = 'block';
+        document.getElementById('orderCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Poll for new messages every 15s
+        if (pollInterval) clearInterval(pollInterval);
+        pollInterval = setInterval(loadMessages, 15000);
+      }
+    } catch (err) {
+      document.getElementById('lookupError').textContent = '⚠️ Something went wrong. Please try again.';
+      document.getElementById('lookupError').style.display = 'block';
+    }
+
+    btn.disabled = false;
+    btn.textContent = '🔍 Track';
+  }
+
+  function renderOrder(o) {
+    document.getElementById('resOrderId').textContent = o.id;
+    document.getElementById('resDate').textContent = o.created_at ? 'Placed on ' + new Date(o.created_at).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+    document.getElementById('resName').textContent = o.name || '—';
+    document.getElementById('resScent').textContent = o.scent || '—';
+    document.getElementById('resQty').textContent = o.quantity_label || o.quantity || '—';
+    document.getElementById('resLocation').textContent = o.location || '—';
+    document.getElementById('resAddress').textContent = o.address || '—';
+
+    // Status pill
+    var pill = document.getElementById('resStatusPill');
+    pill.textContent = (STATUS_EMOJIS[o.status] || '') + ' ' + (STATUS_LABELS[o.status] || o.status);
+    pill.className = 'status-pill ' + (STATUS_CLASSES[o.status] || 'status-pending');
+
+    // Tracker steps
+    var stepOrder = ['pending', 'confirmed', 'shipped', 'fulfilled'];
+    var currentIdx = o.status === 'cancelled' ? -1 : stepOrder.indexOf(o.status);
+
+    stepOrder.forEach(function(step, i) {
+      var el = document.getElementById('step-' + step);
+      if (!el) return;
+      el.className = 'tracker-step';
+      if (o.status === 'cancelled') {
+        el.classList.add(i === 0 ? 'done' : '');
+      } else if (i < currentIdx) {
+        el.classList.add('done');
+      } else if (i === currentIdx) {
+        el.classList.add('active');
+      }
+    });
+
+    // If cancelled, show special indicator
+    if (o.status === 'cancelled') {
+      var cancelStep = document.getElementById('step-fulfilled');
+      if (cancelStep) {
+        cancelStep.querySelector('.step-dot').textContent = '❌';
+        cancelStep.querySelector('.step-label').textContent = 'Cancelled';
+        cancelStep.classList.add('cancelled');
+      }
+    }
+  }
+
+  async function loadMessages() {
+    if (!currentOrderId) return;
+    try {
+      var res = await fetch('/.netlify/functions/get-messages?orderId=' + encodeURIComponent(currentOrderId));
+      var data = await res.json();
+      renderMessages(data.messages || []);
+    } catch (_) {}
+  }
+
+  function renderMessages(msgs) {
+    var box = document.getElementById('chatBox');
+    if (!msgs.length) {
+      box.innerHTML = '<div class="chat-empty-msg">No messages yet. Send us a message below!</div>';
+      return;
+    }
+    var wasAtBottom = box.scrollHeight - box.scrollTop <= box.clientHeight + 10;
+    box.innerHTML = msgs.map(function(m) {
+      var isCustomer = m.sender === 'customer';
+      var wrapClass = isCustomer ? 'msg-wrap-c' : 'msg-wrap-a';
+      var bubbleClass = isCustomer ? 'bubble-c' : 'bubble-a';
+      var label = isCustomer ? 'You' : 'SaniScents 🌿';
+      var ts = m.created_at ? new Date(m.created_at).toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' }) + ', ' + new Date(m.created_at).toLocaleDateString('en-PH', { month: 'short', day: 'numeric' }) : '';
+      return '<div class="' + wrapClass + '">' +
+        '<div class="msg-sender-label">' + esc(label) + '</div>' +
+        '<div class="' + bubbleClass + '">' + esc(m.text) + '</div>' +
+        '<div class="msg-ts">' + ts + '</div>' +
+        '</div>';
+    }).join('');
+    if (wasAtBottom) box.scrollTop = box.scrollHeight;
+  }
+
+  async function sendMsg() {
+    if (!currentOrderId) return;
+    var input = document.getElementById('chatInput');
+    var btn = document.getElementById('sendBtn');
+    var text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    input.disabled = true;
+    btn.disabled = true;
+
+    try {
+      var res = await fetch('/.netlify/functions/send-message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: currentOrderId, sender: 'customer', text: text }),
+      });
+      var data = await res.json();
+      if (data.success) {
+        await loadMessages();
+      } else {
+        alert('Failed to send message. Please try again.');
+      }
+    } catch (err) {
+      alert('Network error. Please try again.');
+    }
+
+    input.disabled = false;
+    btn.disabled = false;
+    input.focus();
+  }
+
+  function esc(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+</script>
+</body>
+</html>
