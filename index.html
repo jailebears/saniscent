@@ -1069,6 +1069,48 @@
       color: var(--text);
     }
 
+
+    /* MOP options */
+    .mop-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .mop-option { cursor: pointer; }
+    .mop-option input[type='radio'] { display: none; }
+    .mop-option-inner {
+      border: 2px solid rgba(184,224,210,0.5);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--cream);
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .mop-option input[type='radio']:checked + .mop-option-inner {
+      border-color: var(--forest);
+      background: #e8f5ef;
+      box-shadow: 0 0 0 3px rgba(45,106,82,0.1);
+    }
+    .mop-option-inner:hover:not(.mop-disabled) { border-color: var(--deep-mint); background: white; }
+    .mop-disabled { opacity: 0.55; cursor: not-allowed; }
+    .mop-title { font-size: 13px; font-weight: 800; color: var(--text); }
+    .mop-sub { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+    .mop-badge {
+      display: inline-block;
+      background: var(--lavender);
+      color: var(--lavender-deep);
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 100px;
+      letter-spacing: 0.05em;
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+
     .submit-btn {
       width: 100%;
       padding: 18px;
@@ -1461,12 +1503,12 @@
 
         <div class="form-group">
           <label class="form-label">Contact Number</label>
-          <input class="form-input" id="customerContact" type="tel" placeholder="e.g. 09XX XXX XXXX"/>
+          <input class="form-input" id="customerContact" type="tel" placeholder="e.g. 09XX XXX XXXX" oninput="validatePhone()"/><div id="phoneError" style="display:none;margin-top:6px;font-size:12px;color:#c0392b;font-weight:700;">⚠️ Please input a valid Philippine mobile number (e.g. 09171234567)</div>
         </div>
 
         <div class="form-group">
           <label class="form-label">Delivery Address</label>
-          <textarea class="form-textarea" id="customerAddress" placeholder="Full address including barangay, city, province..."></textarea>
+          <textarea class="form-textarea" id="customerAddress" placeholder="Full address including barangay, city, province..." oninput="validateAddress()"></textarea><div style="margin-top:10px;"><label class="form-label" style="margin-bottom:6px;display:block;">Confirm Delivery Address</label><textarea class="form-textarea" id="customerAddressConfirm" placeholder="Re-type your address to confirm..." oninput="validateAddress()"></textarea><div id="addressError" style="display:none;margin-top:6px;font-size:12px;color:#c0392b;font-weight:700;">⚠️ Addresses do not match. Please check and try again.</div></div>
         </div>
 
         <div class="form-group">
@@ -1476,12 +1518,39 @@
 
         <div class="price-summary">
           <div>
-            <div class="price-label">Order Total (COD)</div>
-            <div class="price-note">Cash on Delivery · Free within area</div>
+            <div class="price-label">Order Total</div>
+            <div class="price-note" id="mopNote">Cash on Delivery · Free within area</div>
           </div>
           <div>
             <div class="price-value" id="priceDisplay">₱ —</div>
           </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Mode of Payment</label>
+          <div class="mop-options">
+            <label class="mop-option">
+              <input type="radio" name="mopChoice" value="cod" checked onchange="onMopChange()"/>
+              <div class="mop-option-inner">
+                <span style="font-size:22px">💵</span>
+                <div>
+                  <div class="mop-title">Cash on Delivery</div>
+                  <div class="mop-sub">Pay when your order arrives</div>
+                </div>
+              </div>
+            </label>
+            <label class="mop-option" onclick="showOnlineUnavailable()">
+              <input type="radio" name="mopChoice" value="online" disabled/>
+              <div class="mop-option-inner mop-disabled">
+                <span style="font-size:22px">📱</span>
+                <div>
+                  <div class="mop-title">Online Payment <span class="mop-badge">Soon</span></div>
+                  <div class="mop-sub">GCash, Maya, Bank Transfer</div>
+                </div>
+              </div>
+            </label>
+          </div>
+          <div id="onlineUnavailableMsg" style="display:none;margin-top:10px;padding:12px 16px;background:#fff3cd;border-radius:10px;font-size:13px;color:#856404;font-weight:700;">⚠️ Online payment is unavailable right now. Please use Cash on Delivery.</div>
         </div>
 
         <button class="submit-btn" id="submitBtn" onclick="submitOrder()">
@@ -1597,6 +1666,35 @@
     display.textContent = '₱ ' + total.toLocaleString();
   }
 
+
+  function validatePhone() {
+    const val = document.getElementById('customerContact').value.trim();
+    const valid = /^(09|+639)d{9}$/.test(val.replace(/s/g, ''));
+    document.getElementById('phoneError').style.display = val.length > 3 && !valid ? 'block' : 'none';
+    return valid;
+  }
+
+  function validateAddress() {
+    const a1 = document.getElementById('customerAddress').value.trim();
+    const a2 = document.getElementById('customerAddressConfirm').value.trim();
+    const match = a1.length > 0 && a2.length > 0 && a1.toLowerCase() === a2.toLowerCase();
+    document.getElementById('addressError').style.display = a2.length > 0 && !match ? 'block' : 'none';
+    return match;
+  }
+
+  function onMopChange() {
+    const mop = document.querySelector('input[name="mopChoice"]:checked')?.value;
+    document.getElementById('mopNote').textContent = mop === 'cod' ? 'Cash on Delivery · Free within area' : 'Online Payment';
+  }
+
+  function showOnlineUnavailable() {
+    const msg = document.getElementById('onlineUnavailableMsg');
+    msg.style.display = 'block';
+    // Reset back to COD
+    document.querySelector('input[name="mopChoice"][value="cod"]').checked = true;
+    setTimeout(() => { msg.style.display = 'none'; }, 4000);
+  }
+
   async function submitOrder() {
     // UPDATED
     const scent = document.getElementById('scentSelect').value;
@@ -1616,8 +1714,11 @@
     if (qtyChoice === 'other' && !quantity) return showError('Please enter a valid quantity.');
     if (!location) return showError('Please select where you are from.');
     if (!name) return showError('Please enter your full name.');
-    if (!contact) return showError('Please enter your contact number.');
+    if (!contact || !/^(09|\+639)\d{9}$/.test(contact.replace(/\s/g, ''))) return showError('Please input a valid Philippine mobile number (e.g. 09171234567).');
     if (!address) return showError('Please enter your delivery address.');
+    const addressConfirm = document.getElementById('customerAddressConfirm').value.trim();
+    if (!addressConfirm) return showError('Please confirm your delivery address.');
+    if (address.toLowerCase() !== addressConfirm.toLowerCase()) return showError('Addresses do not match. Please check and re-enter.');
     errEl.style.display = 'none';
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
