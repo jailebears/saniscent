@@ -1,25 +1,23 @@
-const { getStore } = require("@netlify/blobs");
+// SaniScents -- submit-order.js
+// Database: Supabase (free tier)
+// Required Netlify env vars: SUPABASE_URL, SUPABASE_SERVICE_KEY
 
 exports.handler = async (event) => {
-  if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: "Method Not Allowed" };
-  }
-
+  const cors = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+  if (event.httpMethod === 'OPTIONS') return { statusCode: 200, headers: cors, body: '' };
+  if (event.httpMethod !== 'POST')
+    return { statusCode: 405, headers: cors, body: JSON.stringify({ error: 'Method Not Allowed' }) };
   try {
-    const body = JSON.parse(event.body);
-    const { name, contact, address, scent, quantity, notes } = body;
+    const { name, contact, address, scent, quantity, quantityLabel, location, notes } =
+      JSON.parse(event.body || '{}');
+    if (!name || !contact || !address || !scent || !quantity)
+      return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'Missing required fields' }) };
 
-    if (!name || !contact || !address || !scent || !quantity) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: "Missing required fields" }),
-      };
-    }
-
-    const store = getStore("orders");
-
-    const orderId = "ORD-" + Date.now() + "-" + Math.random().toString(36).substr(2, 5).toUpperCase();
-    const timestamp = new Date().toISOString();
+    const orderId = 'ORD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5).toUpperCase();
 
     const order = {
       id: orderId,
@@ -28,35 +26,28 @@ exports.handler = async (event) => {
       address,
       scent,
       quantity: parseInt(quantity),
-      notes: notes || "",
-      status: "pending",
-      createdAt: timestamp,
-      updatedAt: timestamp,
+      quantity_label: quantityLabel || '',
+      location: location || '',
+      notes: notes || '',
+      status: 'pending',
+      created_at: new Date().toISOString(),
     };
 
-    await store.setJSON(orderId, order);
-
-    // Maintain index list
-    let index = [];
-    try {
-      const raw = await store.get("_index", { type: "json" });
-      if (Array.isArray(raw)) index = raw;
-    } catch (_) {}
-    index.unshift(orderId);
-    await store.setJSON("_index", index);
-
-    return {
-      statusCode: 200,
+    const res = await fetch(process.env.SUPABASE_URL + '/rest/v1/orders', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        'Content-Type': 'application/json',
+        'apikey': process.env.SUPABASE_SERVICE_KEY,
+        'Authorization': 'Bearer ' + process.env.SUPABASE_SERVICE_KEY,
+        'Prefer': 'return=minimal',
       },
-      body: JSON.stringify({ success: true, orderId }),
-    };
+      body: JSON.stringify(order),
+    });
+
+    if (!res.ok) throw new Error(await res.text());
+
+    return { statusCode: 200, headers: cors, body: JSON.stringify({ success: true, orderId }) };
   } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "Server error: " + err.message }),
-    };
+    return { statusCode: 500, headers: cors, body: JSON.stringify({ error: 'Server error: ' + err.message }) };
   }
 };
