@@ -1,6 +1,4 @@
-// SaniScents -- send-message.js
-// Customers send as 'customer', admin sends with x-admin-key header
-// Required env vars: SUPABASE_URL, SUPABASE_SERVICE_KEY, ADMIN_SECRET_KEY
+
 
 const ADMIN_KEY = process.env.ADMIN_SECRET_KEY || 'saniscents-admin-2026';
 
