@@ -802,6 +802,47 @@
     .confirm-btn-cancel { padding: 10px 24px; border-radius: 100px; border: 1.5px solid rgba(184,224,210,0.5); background: white; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
     .confirm-btn-delete { padding: 10px 24px; border-radius: 100px; border: none; background: var(--danger); color: white; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; transition: opacity 0.2s; }
     .confirm-btn-delete:hover { opacity: 0.85; }
+
+    .delete-btn { background:#fde0e0;border:none;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:15px;transition:all 0.2s; }
+    .delete-btn:hover { background:var(--danger);color:white;transform:scale(1.1); }
+
+    .messages-layout { display:grid;grid-template-columns:280px 1fr;gap:20px;height:calc(100vh - 200px); }
+    .thread-list { background:white;border-radius:20px;border:1px solid rgba(184,224,210,0.2);overflow-y:auto;box-shadow:0 2px 12px rgba(0,0,0,0.05); }
+    .thread-list-header { padding:18px 20px 12px;font-size:11px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-light);border-bottom:1px solid rgba(184,224,210,0.2); }
+    .thread-item { padding:14px 20px;border-bottom:1px solid rgba(184,224,210,0.1);cursor:pointer;transition:background 0.15s; }
+    .thread-item:hover { background:var(--cream); }
+    .thread-item.active { background:#e8f5ef;border-left:3px solid var(--forest); }
+    .thread-name { font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px; }
+    .thread-preview { font-size:12px;color:var(--text-light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .thread-time { font-size:10px;color:var(--text-light); }
+
+    .chat-area { background:white;border-radius:20px;border:1px solid rgba(184,224,210,0.2);box-shadow:0 2px 12px rgba(0,0,0,0.05);display:flex;flex-direction:column;overflow:hidden; }
+    .chat-empty { display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text-light);text-align:center;padding:40px; }
+    .chat-header { padding:16px 24px;border-bottom:1px solid rgba(184,224,210,0.2);font-weight:800;font-size:15px;color:var(--text);background:var(--cream);flex-shrink:0; }
+    .chat-messages { flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px; }
+    .msg-wrap-admin { display:flex;flex-direction:column;align-items:flex-end; }
+    .msg-wrap-customer { display:flex;flex-direction:column;align-items:flex-start; }
+    .msg-sender { font-size:10px;font-weight:700;color:var(--text-light);margin-bottom:3px; }
+    .msg-bubble { max-width:70%;padding:10px 16px;border-radius:18px;font-size:14px;line-height:1.5;word-break:break-word; }
+    .msg-bubble-admin { background:var(--forest);color:white;border-bottom-right-radius:4px; }
+    .msg-bubble-customer { background:var(--cream);color:var(--text);border-bottom-left-radius:4px;border:1px solid rgba(184,224,210,0.4); }
+    .msg-time { font-size:10px;color:var(--text-light);margin-top:3px; }
+    .chat-input-row { padding:14px 20px;border-top:1px solid rgba(184,224,210,0.2);display:flex;gap:10px;flex-shrink:0; }
+    .chat-input { flex:1;padding:12px 16px;border:1.5px solid rgba(184,224,210,0.5);border-radius:100px;font-size:14px;font-family:'Nunito',sans-serif;outline:none;transition:border-color 0.2s; }
+    .chat-input:focus { border-color:var(--deep-mint); }
+    .chat-send-btn { padding:12px 20px;background:var(--forest);color:white;border:none;border-radius:100px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:all 0.2s; }
+    .chat-send-btn:hover { background:var(--deep-mint); }
+
+    .confirm-overlay { display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center; }
+    .confirm-overlay.active { display:flex; }
+    .confirm-box { background:white;border-radius:20px;padding:36px 40px;text-align:center;max-width:360px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+    .confirm-icon { font-size:40px;margin-bottom:12px; }
+    .confirm-title { font-size:18px;font-weight:800;margin-bottom:8px;color:var(--text); }
+    .confirm-desc { font-size:13px;color:var(--text-light);margin-bottom:24px;line-height:1.5; }
+    .confirm-btns { display:flex;gap:10px;justify-content:center; }
+    .confirm-btn-cancel { padding:10px 24px;border-radius:100px;border:1.5px solid rgba(184,224,210,0.5);background:white;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif; }
+    .confirm-btn-delete { padding:10px 24px;border-radius:100px;border:none;background:var(--danger);color:white;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:opacity 0.2s; }
+    .confirm-btn-delete:hover { opacity:0.85; }
     @media (max-width: 1100px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .charts-grid { grid-template-columns: 1fr; }
@@ -1072,6 +1113,40 @@
         </div>
       </div>
     </div>
+
+    <!-- MESSAGES PAGE -->
+    <div class="page" id="page-messages">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Messages 💬</div>
+          <div class="page-subtitle">Direct communication with customers</div>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-outline" onclick="loadThreads()">🔄 Refresh</button>
+        </div>
+      </div>
+      <div class="messages-layout">
+        <div class="thread-list">
+          <div class="thread-list-header">Conversations</div>
+          <div id="threadItems"><div class="loading-spinner"><div class="spinner"></div>Loading...</div></div>
+        </div>
+        <div class="chat-area">
+          <div class="chat-empty" id="chatEmpty">
+            <div style="font-size:48px;margin-bottom:12px;">💬</div>
+            <div style="font-weight:700;font-size:16px;margin-bottom:8px;">Select a conversation</div>
+            <div style="font-size:13px;color:var(--text-light);">Pick a customer thread on the left</div>
+          </div>
+          <div class="chat-window" id="chatWindow" style="display:none;flex-direction:column;height:100%;">
+            <div class="chat-header" id="chatHeader"></div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input-row">
+              <input class="chat-input" id="chatInput" type="text" placeholder="Type a message..." onkeydown="if(event.key==='Enter') sendMessage()"/>
+              <button class="chat-send-btn" onclick="sendMessage()">Send ➤</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -1088,6 +1163,19 @@
   </div>
 </div>
 
+
+<!-- Delete Confirm Modal -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-title">Delete this order?</div>
+    <div class="confirm-desc" id="confirmDesc">This cannot be undone.</div>
+    <div class="confirm-btns">
+      <button class="confirm-btn-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="confirm-btn-delete" onclick="confirmDelete()">Yes, Delete</button>
+    </div>
+  </div>
+</div>
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
@@ -1136,6 +1224,7 @@
       if (item.getAttribute('onclick').includes(page)) item.classList.add('active');
     });
     if (page === 'sales') renderSalesPage();
+    if (page === 'messages') { loadThreads(); }
     if (page === 'messages') loadMessages();
   }
 
@@ -1432,6 +1521,167 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   }
+
+  // ===== DELETE ORDER =====
+  let pendingDeleteId = null;
+
+  function deleteOrder(orderId) {
+    pendingDeleteId = orderId;
+    const order = allOrders.find(o => o.id === orderId);
+    document.getElementById('confirmDesc').textContent =
+      'Delete order ' + orderId + ' placed by ' + (order ? order.name : 'this customer') + '? This cannot be undone.';
+    document.getElementById('confirmOverlay').classList.add('active');
+  }
+
+  function closeConfirm() {
+    pendingDeleteId = null;
+    document.getElementById('confirmOverlay').classList.remove('active');
+  }
+
+  async function confirmDelete() {
+    if (!pendingDeleteId) return;
+    const orderId = pendingDeleteId;
+    closeConfirm();
+    try {
+      const res = await fetch('/.netlify/functions/delete-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_KEY },
+        body: JSON.stringify({ orderId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('🗑️ Order deleted');
+        await loadOrders();
+        if (activeThread === orderId) {
+          activeThread = null;
+          document.getElementById('chatEmpty').style.display = 'flex';
+          document.getElementById('chatWindow').style.display = 'none';
+        }
+      } else {
+        showToast('⚠️ ' + (data.error || 'Delete failed'));
+      }
+    } catch (err) {
+      showToast('⚠️ Network error');
+    }
+  }
+
+  // ===== MESSAGES =====
+  let activeThread = null;
+
+  async function loadThreads() {
+    const threadEl = document.getElementById('threadItems');
+    if (!allOrders.length) {
+      threadEl.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-title">No orders yet</div></div>';
+      return;
+    }
+    // Fetch latest message per order for preview
+    const previews = {};
+    await Promise.all(allOrders.map(async o => {
+      try {
+        const res = await fetch('/.netlify/functions/get-messages?orderId=' + o.id, {
+          headers: { 'x-admin-key': ADMIN_KEY }
+        });
+        const data = await res.json();
+        if (data.messages && data.messages.length) {
+          previews[o.id] = data.messages[data.messages.length - 1];
+        }
+      } catch (_) {}
+    }));
+
+    threadEl.innerHTML = allOrders.map(o => {
+      const last = previews[o.id];
+      const preview = last ? last.text : 'No messages yet';
+      const time = last ? formatTime(last.created_at) : '';
+      const isActive = activeThread === o.id ? 'active' : '';
+      return '<div class="thread-item ' + isActive + '" onclick="openThread('' + o.id + '')">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+        '<div class="thread-name">' + esc(o.name) + '</div>' +
+        '<div class="thread-time">' + time + '</div></div>' +
+        '<div class="thread-preview">' + esc(o.id) + ' · ' + esc(preview) + '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  async function openThread(orderId) {
+    activeThread = orderId;
+    const order = allOrders.find(o => o.id === orderId);
+    if (!order) return;
+
+    document.getElementById('chatEmpty').style.display = 'none';
+    const win = document.getElementById('chatWindow');
+    win.style.display = 'flex';
+
+    document.getElementById('chatHeader').innerHTML =
+      '<span>💬 ' + esc(order.name) + '</span>' +
+      '<span style="font-size:12px;font-weight:400;color:var(--text-light);margin-left:12px;">' +
+      esc(order.id) + ' · ' + esc(order.contact || '') + '</span>';
+
+    await renderMessages(orderId);
+    loadThreads();
+  }
+
+  async function renderMessages(orderId) {
+    const el = document.getElementById('chatMessages');
+    el.innerHTML = '<div class="loading-spinner"><div class="spinner"></div>Loading...</div>';
+    try {
+      const res = await fetch('/.netlify/functions/get-messages?orderId=' + orderId, {
+        headers: { 'x-admin-key': ADMIN_KEY }
+      });
+      const data = await res.json();
+      const msgs = data.messages || [];
+      if (!msgs.length) {
+        el.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:40px 20px;">No messages yet. Start the conversation!</div>';
+        return;
+      }
+      el.innerHTML = msgs.map(m => {
+        const isAdmin = m.sender === 'admin';
+        return '<div class="' + (isAdmin ? 'msg-wrap-admin' : 'msg-wrap-customer') + '">' +
+          '<div class="msg-sender">' + (isAdmin ? '🛍️ You (Admin)' : '👤 Customer') + '</div>' +
+          '<div class="msg-bubble ' + (isAdmin ? 'msg-bubble-admin' : 'msg-bubble-customer') + '">' + esc(m.text) + '</div>' +
+          '<div class="msg-time">' + formatTime(m.created_at) + '</div>' +
+          '</div>';
+      }).join('');
+      el.scrollTop = el.scrollHeight;
+    } catch (err) {
+      el.innerHTML = '<div style="text-align:center;color:var(--danger);padding:20px;">Failed to load messages</div>';
+    }
+  }
+
+  async function sendMessage() {
+    if (!activeThread) return;
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    input.disabled = true;
+
+    try {
+      const res = await fetch('/.netlify/functions/send-message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': ADMIN_KEY },
+        body: JSON.stringify({ orderId: activeThread, sender: 'admin', text }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        await renderMessages(activeThread);
+        loadThreads();
+      } else {
+        showToast('⚠️ ' + (data.error || 'Failed to send'));
+      }
+    } catch (err) {
+      showToast('⚠️ Network error');
+    }
+    input.disabled = false;
+    input.focus();
+  }
+
+  function formatTime(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' }) +
+      ' · ' + d.toLocaleDateString('en-PH', { month: 'short', day: 'numeric' });
+  }
+
 </script>
 </body>
 </html>
