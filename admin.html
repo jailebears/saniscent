@@ -809,7 +809,8 @@
                 <th>Order ID</th>
                 <th>Customer</th>
                 <th>Scent</th>
-                <th>Qty</th>
+                <th>Qty / Package</th>
+                <th>Location</th>
                 <th>Address</th>
                 <th>Status</th>
                 <th>Date</th>
@@ -880,9 +881,9 @@
 <script>
   // ===== CONFIG =====
   // IMPORTANT: Change this to the key you set in Netlify env vars (ADMIN_SECRET_KEY)
-  const ADMIN_KEY = 'saniscents2026';
-  const PRICE_PER_BOTTLE = 249;
-  const BUNDLE_PRICE = 449;
+  const ADMIN_KEY = 'saniscents-admin-2026';
+  const PRICE_BUY1 = 85;
+  const PRICE_BOTH = 150;
 
   let allOrders = [];
   let currentFilter = 'all';
@@ -1027,9 +1028,9 @@
         <td><span class="order-id">${o.id}</span></td>
         <td><div class="customer-name">${esc(o.name)}</div><div class="customer-contact">${esc(o.contact)}</div></td>
         <td>${scentTag(o.scent)}</td>
-        <td><strong>${o.quantity}</strong></td>
+        <td><strong>${(o.quantity_label || o.quantityLabel) || o.quantity}</strong></td><td><span style="font-size:12px;background:${o.location==='Mapua'?"#e8f5ef":"#f0ecf8"};padding:4px 10px;border-radius:100px;font-weight:700;">${o.location||"—"}</span></td>
         <td>${statusBadge(o.status)}</td>
-        <td class="date-cell">${formatDate(o.createdAt)}</td>
+        <td class="date-cell">${formatDate((o.created_at || o.createdAt))}</td>
       </tr>`).join('');
   }
 
@@ -1052,7 +1053,7 @@
         <td><strong>${o.quantity}</strong></td>
         <td class="address-cell" title="${esc(o.address)}">${esc(o.address)}</td>
         <td>${statusBadge(o.status)}</td>
-        <td class="date-cell">${formatDate(o.createdAt)}</td>
+        <td class="date-cell">${formatDate((o.created_at || o.createdAt))}</td>
         <td>
           <select class="action-select" onchange="updateStatus('${o.id}', this.value)">
             <option value="">— Update —</option>
@@ -1073,7 +1074,7 @@
 
     const revenue = activeOrders.reduce((s, o) => {
       if (!o.scent) return s;
-      const price = o.scent.includes('Bundle') ? BUNDLE_PRICE : PRICE_PER_BOTTLE;
+      const price = (o.scent && o.scent.includes('Both')) ? PRICE_BOTH : PRICE_BUY1;
       return s + price * (o.quantity || 0);
     }, 0);
 
@@ -1107,7 +1108,7 @@
       d.setDate(d.getDate() - i);
       const key = d.toISOString().split('T')[0];
       const label = d.toLocaleDateString('en-PH', { month: 'short', day: 'numeric' });
-      const count = orders.filter(o => o.createdAt && o.createdAt.startsWith(key)).length;
+      const count = orders.filter(o => (o.created_at || o.createdAt) && (o.created_at || o.createdAt).startsWith(key)).length;
       days.push({ label, count });
     }
     const maxDay = Math.max(...days.map(d => d.count), 1);
@@ -1159,7 +1160,7 @@
       '"' + (o.address || '').replace(/"/g, '""') + '"',
       o.scent, o.quantity,
       '"' + (o.notes || '').replace(/"/g, '""') + '"',
-      o.status, formatDate(o.createdAt)
+      o.status, formatDate((o.created_at || o.createdAt))
     ]);
     const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
