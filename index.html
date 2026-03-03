@@ -1111,6 +1111,97 @@
       margin-left: 4px;
     }
 
+
+    .customer-chat {
+      margin-top: 24px;
+      border: 1.5px solid rgba(184,224,210,0.5);
+      border-radius: 18px;
+      overflow: hidden;
+      text-align: left;
+    }
+    .customer-chat-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--forest);
+      padding: 14px 18px 4px;
+    }
+    .customer-chat-subtitle {
+      font-size: 12px;
+      color: var(--text-light);
+      padding: 0 18px 12px;
+      border-bottom: 1px solid rgba(184,224,210,0.3);
+    }
+    .customer-messages {
+      min-height: 120px;
+      max-height: 220px;
+      overflow-y: auto;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #fafcfb;
+    }
+    .chat-hint {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 12px;
+      padding: 20px 0;
+    }
+    .cmsg-wrap-customer { display: flex; flex-direction: column; align-items: flex-end; }
+    .cmsg-wrap-admin { display: flex; flex-direction: column; align-items: flex-start; }
+    .cmsg-bubble-customer {
+      background: var(--forest);
+      color: white;
+      padding: 9px 14px;
+      border-radius: 16px;
+      border-bottom-right-radius: 4px;
+      font-size: 13px;
+      max-width: 80%;
+      word-break: break-word;
+    }
+    .cmsg-bubble-admin {
+      background: white;
+      color: var(--text);
+      border: 1px solid rgba(184,224,210,0.5);
+      padding: 9px 14px;
+      border-radius: 16px;
+      border-bottom-left-radius: 4px;
+      font-size: 13px;
+      max-width: 80%;
+      word-break: break-word;
+    }
+    .cmsg-label { font-size: 10px; font-weight: 700; color: var(--text-light); margin-bottom: 3px; }
+    .cmsg-time { font-size: 10px; color: var(--text-light); margin-top: 3px; }
+    .customer-input-row {
+      display: flex;
+      gap: 8px;
+      padding: 12px 14px;
+      border-top: 1px solid rgba(184,224,210,0.3);
+      background: white;
+    }
+    .customer-chat-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid rgba(184,224,210,0.5);
+      border-radius: 100px;
+      font-size: 13px;
+      font-family: 'Nunito', sans-serif;
+      outline: none;
+    }
+    .customer-chat-input:focus { border-color: var(--deep-mint); }
+    .customer-send-btn {
+      padding: 10px 16px;
+      background: var(--forest);
+      color: white;
+      border: none;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .customer-send-btn:hover { background: var(--deep-mint); }
     .submit-btn {
       width: 100%;
       padding: 18px;
@@ -1213,7 +1304,7 @@
     <li><a href="#scents">Scents</a></li>
     <li><a href="#features">Benefits</a></li>
     <li><a href="#ingredients">Ingredients</a></li>
-    <li><a href="#" class="nav-cta" onclick="openModal(); return false;">Shop Now</a></li>
+    <li><a href="track.html" style="font-weight:700;color:var(--forest);">📦 Track Order</a></li><li><a href="#" class="nav-cta" onclick="openModal(); return false;">Shop Now</a></li>
   </ul>
 </nav>
 
@@ -1416,6 +1507,7 @@
       <li><a href="#">Therese Fragrance</a></li>
       <li><a href="#">Our Story</a></li>
       <li><a href="#">Contact Us</a></li>
+      <li><a href="track.html">Track My Order</a></li>
     </ul>
   </div>
 </footer>
@@ -1568,7 +1660,21 @@
           Your Order ID<br>
           <strong id="successOrderId">—</strong>
         </div>
-        <button class="submit-btn" style="margin-top:24px;" onclick="closeModal()">Close</button>
+
+        <!-- Message section -->
+        <div class="customer-chat" id="customerChat">
+          <div class="customer-chat-title">💬 Message the Seller</div>
+          <div class="customer-chat-subtitle">Have a question about your order? Send us a message below.</div>
+          <div class="customer-messages" id="customerMessages">
+            <div class="chat-hint">Your conversation will appear here.</div>
+          </div>
+          <div class="customer-input-row">
+            <input class="customer-chat-input" id="customerChatInput" type="text" placeholder="Type your message..." onkeydown="if(event.key==='Enter') customerSendMessage()"/>
+            <button class="customer-send-btn" onclick="customerSendMessage()">Send ➤</button>
+          </div>
+        </div>
+
+        <a href="" id="trackOrderLink" target="_blank" style="display:block;text-align:center;margin-top:12px;font-size:13px;font-weight:700;color:var(--forest);">📦 Track this order later →</a><button class="submit-btn" style="margin-top:12px;" onclick="closeModal()">Close</button>
       </div>
 
     </div>
@@ -1726,7 +1832,11 @@
     try {
       const res = await fetch('/.netlify/functions/submit-order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, contact, address, scent, quantity, quantityLabel, location, notes }) });
       const data = await res.json();
-      if (data.success) { document.getElementById('orderForm').style.display = 'none'; document.getElementById('orderSuccess').classList.add('active'); document.getElementById('successOrderId').textContent = data.orderId; }
+      if (data.success) { document.getElementById('orderForm').style.display = 'none'; document.getElementById('orderSuccess').classList.add('active'); document.getElementById('successOrderId').textContent = data.orderId;
+        currentOrderId = data.orderId;
+        var tl = document.getElementById('trackOrderLink'); if(tl) tl.href = 'track.html?orderId=' + data.orderId;
+        renderCustomerMessages([]);
+        document.getElementById('customerChatInput').focus(); }
       else showError(data.error || 'Something went wrong. Please try again.');
     } catch (err) { showError('Network error. Please check your connection and try again.'); }
     btn.disabled = false;
@@ -1738,6 +1848,94 @@
     el.textContent = '⚠️ ' + msg;
     el.style.display = 'block';
   }
+
+  // ===== CUSTOMER MESSAGING =====
+  let currentOrderId = null;
+
+  async function customerSendMessage() {
+    const input = document.getElementById('customerChatInput');
+    const text = input.value.trim();
+    if (!text || !currentOrderId) return;
+    input.value = '';
+    input.disabled = true;
+
+    // Optimistically add to UI
+    appendCustomerMessage({ sender: 'customer', text: text, created_at: new Date().toISOString() });
+
+    try {
+      const res = await fetch('/.netlify/functions/send-message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: currentOrderId, sender: 'customer', text: text }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        showCustomerChatError('Failed to send. Please try again.');
+      }
+    } catch (err) {
+      showCustomerChatError('Network error. Please try again.');
+    }
+    input.disabled = false;
+    input.focus();
+  }
+
+  async function loadCustomerMessages() {
+    if (!currentOrderId) return;
+    try {
+      const res = await fetch('/.netlify/functions/get-messages?orderId=' + currentOrderId);
+      const data = await res.json();
+      renderCustomerMessages(data.messages || []);
+    } catch (_) {}
+  }
+
+  function renderCustomerMessages(msgs) {
+    const el = document.getElementById('customerMessages');
+    if (!msgs.length) {
+      el.innerHTML = '<div class="chat-hint">Your conversation will appear here.</div>';
+      return;
+    }
+    el.innerHTML = msgs.map(function(m) {
+      const isCustomer = m.sender === 'customer';
+      const wrapClass = isCustomer ? 'cmsg-wrap-customer' : 'cmsg-wrap-admin';
+      const bubbleClass = isCustomer ? 'cmsg-bubble-customer' : 'cmsg-bubble-admin';
+      const label = isCustomer ? 'You' : 'SaniScents 🌿';
+      const time = m.created_at ? new Date(m.created_at).toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' }) : '';
+      return '<div class="' + wrapClass + '">' +
+        '<div class="cmsg-label">' + label + '</div>' +
+        '<div class="' + bubbleClass + '">' + escHtml(m.text) + '</div>' +
+        '<div class="cmsg-time">' + time + '</div>' +
+        '</div>';
+    }).join('');
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function appendCustomerMessage(m) {
+    const el = document.getElementById('customerMessages');
+    const hint = el.querySelector('.chat-hint');
+    if (hint) hint.remove();
+    const time = new Date(m.created_at).toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
+    const div = document.createElement('div');
+    div.className = 'cmsg-wrap-customer';
+    div.innerHTML = '<div class="cmsg-label">You</div>' +
+      '<div class="cmsg-bubble-customer">' + escHtml(m.text) + '</div>' +
+      '<div class="cmsg-time">' + time + '</div>';
+    el.appendChild(div);
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function showCustomerChatError(msg) {
+    const el = document.getElementById('customerMessages');
+    const err = document.createElement('div');
+    err.style = 'text-align:center;color:#c0392b;font-size:12px;padding:6px;';
+    err.textContent = '⚠️ ' + msg;
+    el.appendChild(err);
+  }
+
+  function escHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
 </script>
 </body>
 </html>
