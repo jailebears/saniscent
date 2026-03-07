@@ -1,6 +1,3 @@
-// SaniScents -- get-orders.js
-// Database: Supabase
-// Required Netlify env vars: SUPABASE_URL, SUPABASE_SERVICE_KEY, ADMIN_SECRET_KEY
 
 const ADMIN_KEY = process.env.ADMIN_SECRET_KEY || 'saniscents-admin-2026';
 
