@@ -1,6 +1,4 @@
-// SaniScents -- get-messages.js
 // Fetches all messages for a given orderId from Supabase
-// Required env vars: SUPABASE_URL, SUPABASE_SERVICE_KEY, ADMIN_SECRET_KEY
 
 const ADMIN_KEY = process.env.ADMIN_SECRET_KEY || 'saniscents-admin-2026';
 
