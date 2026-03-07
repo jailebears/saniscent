@@ -32,7 +32,6 @@
       overflow-x: hidden;
     }
 
-    /* ===== NAVBAR ===== */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -87,7 +86,6 @@
     }
     .nav-cta:hover { background: var(--deep-mint) !important; transform: scale(1.03); }
 
-    /* ===== HERO ===== */
     .hero {
       min-height: 100vh;
       display: grid;
@@ -311,7 +309,6 @@
     .badge-2 { bottom: 20%; left: -30px; }
     .badge-3 { bottom: 5%; right: -20px; }
 
-    /* ===== SCENTS SECTION ===== */
     .scents-section {
       padding: 100px 60px;
       text-align: center;
@@ -422,7 +419,6 @@
       user-select: none;
     }
 
-    /* Order btn on scent cards */
     .scent-order-btn {
       margin-top: 20px;
       display: inline-flex;
@@ -509,7 +505,6 @@
       color: var(--text-light);
     }
 
-    /* ===== VIDEO SHOWCASE ===== */
     .showcase-section {
       padding: 100px 60px;
       background: var(--forest);
@@ -625,7 +620,6 @@
       transform: scale(1.03);
     }
 
-    /* ===== CTA SECTION ===== */
     .cta-section {
       padding: 120px 60px;
       background: linear-gradient(135deg, #e8f5ef 0%, #f0ecf8 100%);
@@ -696,7 +690,6 @@
       box-shadow: 0 20px 50px rgba(45,106,82,0.35);
     }
 
-    /* ===== FOOTER ===== */
     footer {
       background: var(--text);
       color: rgba(255,255,255,0.6);
@@ -758,7 +751,6 @@
       color: rgba(255,255,255,0.3);
     }
 
-    /* Scroll reveal */
     .reveal {
       opacity: 0;
       transform: translateY(40px);
@@ -820,7 +812,6 @@
       50% { top: 14px; opacity: 0.3; }
     }
 
-    /* ===== ORDER MODAL ===== */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -970,7 +961,6 @@
       margin-top: 4px;
     }
 
-    /* Quantity option cards */
     .qty-options {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1025,7 +1015,6 @@
       margin-top: 3px;
     }
 
-    /* Location option cards */
     .location-options {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1069,8 +1058,6 @@
       color: var(--text);
     }
 
-
-    /* MOP options */
     .mop-options {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1224,7 +1211,6 @@
     .submit-btn:hover { background: var(--deep-mint); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,106,82,0.3); }
     .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-    /* Success state */
     .order-success {
       display: none;
       text-align: center;
@@ -1297,7 +1283,6 @@
 </head>
 <body>
 
-<!-- ===== NAVBAR ===== -->
 <nav>
   <div class="nav-logo">Sani<span>Scents</span></div>
   <ul class="nav-links">
@@ -1308,7 +1293,6 @@
   </ul>
 </nav>
 
-<!-- ===== HERO ===== -->
 <section class="hero">
   <div class="bubble" style="width:80px;height:80px;top:15%;left:5%;--dur:7s;--delay:0s"></div>
   <div class="bubble" style="width:40px;height:40px;top:60%;left:8%;--dur:9s;--delay:1s"></div>
@@ -1370,7 +1354,6 @@
   </div>
 </section>
 
-<!-- ===== SCENTS ===== -->
 <section class="scents-section" id="scents">
   <div class="section-eyebrow">Available Variants</div>
   <h2 class="section-title reveal">Our <em>Signature</em> Scents</h2>
@@ -1396,7 +1379,6 @@
   </div>
 </section>
 
-<!-- ===== FEATURES ===== -->
 <section class="features-section" id="features">
   <div class="features-header">
     <div class="section-eyebrow">Why You'll Love It</div>
@@ -1437,7 +1419,6 @@
   </div>
 </section>
 
-<!-- ===== 3D SHOWCASE ===== -->
 <section class="showcase-section">
   <div class="section-eyebrow">360° 3D Render</div>
   <h2 class="section-title reveal">See It From <em>Every Angle</em></h2>
@@ -1459,7 +1440,6 @@
   </div>
 </section>
 
-<!-- ===== INGREDIENTS ===== -->
 <section class="ingredients-section" id="ingredients">
   <div class="ingredients-header">
     <div class="section-eyebrow">What's Inside</div>
@@ -1476,7 +1456,6 @@
   </div>
 </section>
 
-<!-- ===== CTA ===== -->
 <section class="cta-section" id="shop">
   <h2 class="cta-title">Share the <em>Freshness.</em></h2>
   <p class="cta-subtitle">Grab yours now and discover the cooling difference. SaniScents — because every day deserves a little cool.</p>
@@ -1486,7 +1465,6 @@
   </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
 <footer>
   <div>
     <div class="footer-brand">Sani<span>Scents</span></div>
@@ -1516,7 +1494,6 @@
   <span>Stay Fresh. Stay Cool. ❄️🌿</span>
 </div>
 
-<!-- ===== ORDER MODAL ===== -->
 <div class="modal-overlay" id="orderModal" onclick="handleOverlayClick(event)">
   <div class="modal">
     <div class="modal-header">
@@ -1526,7 +1503,6 @@
     </div>
     <div class="modal-body">
 
-      <!-- Order Form -->
       <div id="orderForm">
         <div class="form-group">
           <label class="form-label">Choose Your Scent</label>
@@ -1651,7 +1627,6 @@
         <div id="formError" style="display:none;margin-top:12px;padding:12px 16px;background:#fde0e0;border-radius:10px;font-size:13px;color:#c0392b;font-weight:600;"></div>
       </div>
 
-      <!-- Success State -->
       <div class="order-success" id="orderSuccess">
         <span class="success-icon">✅</span>
         <div class="success-title">Order Received!</div>
@@ -1661,7 +1636,6 @@
           <strong id="successOrderId">—</strong>
         </div>
 
-        <!-- Message section -->
         <div class="customer-chat" id="customerChat">
           <div class="customer-chat-title">💬 Message the Seller</div>
           <div class="customer-chat-subtitle">Have a question about your order? Send us a message below.</div>
@@ -1682,11 +1656,10 @@
 </div>
 
 <script>
-  // ===== PRICE CONFIG =====
+
   const PRICE_BUY1 = 85;
   const PRICE_BOTH = 150;
 
-  // ===== SCROLL REVEAL =====
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -1699,7 +1672,6 @@
   }, { threshold: 0.12 });
   reveals.forEach(el => observer.observe(el));
 
-  // ===== SMOOTH SCROLL =====
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const href = a.getAttribute('href');
@@ -1712,18 +1684,16 @@
     });
   });
 
-  // ===== NAV SHADOW =====
   const nav = document.querySelector('nav');
   window.addEventListener('scroll', () => {
     nav.style.boxShadow = window.scrollY > 20 ? '0 4px 24px rgba(0,0,0,0.08)' : 'none';
   });
 
-  // ===== MODAL =====
   function openModal(preselect) {
     const modal = document.getElementById('orderModal');
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
-    // Reset form
+
     document.getElementById('orderForm').style.display = 'block';
     document.getElementById('orderSuccess').classList.remove('active');
     document.getElementById('formError').style.display = 'none';
@@ -1796,13 +1766,13 @@
   function showOnlineUnavailable() {
     const msg = document.getElementById('onlineUnavailableMsg');
     msg.style.display = 'block';
-    // Reset back to COD
+
     document.querySelector('input[name="mopChoice"][value="cod"]').checked = true;
     setTimeout(() => { msg.style.display = 'none'; }, 4000);
   }
 
   async function submitOrder() {
-    // UPDATED
+
     const scent = document.getElementById('scentSelect').value;
     const qtyChoice = document.querySelector('input[name="qtyChoice"]:checked')?.value;
     const location = document.querySelector('input[name="locationChoice"]:checked')?.value;
@@ -1849,7 +1819,6 @@
     el.style.display = 'block';
   }
 
-  // ===== CUSTOMER MESSAGING =====
   let currentOrderId = null;
 
   async function customerSendMessage() {
@@ -1859,7 +1828,6 @@
     input.value = '';
     input.disabled = true;
 
-    // Optimistically add to UI
     appendCustomerMessage({ sender: 'customer', text: text, created_at: new Date().toISOString() });
 
     try {
