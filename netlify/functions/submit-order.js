@@ -1,7 +1,3 @@
-// SaniScents -- submit-order.js
-// Database: Supabase (free tier)
-// Required Netlify env vars: SUPABASE_URL, SUPABASE_SERVICE_KEY
-
 exports.handler = async (event) => {
   const cors = {
     'Content-Type': 'application/json',
