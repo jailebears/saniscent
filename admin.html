@@ -33,7 +33,7 @@
       min-height: 100vh;
     }
 
-    /* ===== LOGIN SCREEN ===== */
+    /*login screen heree*/
     .login-screen {
       min-height: 100vh;
       display: flex;
@@ -113,7 +113,7 @@
       font-weight: 600;
     }
 
-    /* ===== DASHBOARD LAYOUT ===== */
+    /*layout*/
     .dashboard {
       display: none;
       min-height: 100vh;
@@ -124,7 +124,6 @@
       grid-template-columns: 260px 1fr;
     }
 
-    /* ===== SIDEBAR ===== */
     .sidebar {
       background: var(--sidebar);
       min-height: 100vh;
@@ -224,7 +223,7 @@
     }
     .logout-btn:hover { background: rgba(231,76,60,0.15); color: #e74c3c; }
 
-    /* ===== MAIN CONTENT ===== */
+    /*.main*/
     .main {
       padding: 36px 40px;
       overflow-y: auto;
@@ -233,7 +232,6 @@
     .page { display: none; }
     .page.active { display: block; }
 
-    /* ===== PAGE HEADER ===== */
     .page-header {
       display: flex;
       justify-content: space-between;
@@ -336,7 +334,6 @@
       color: var(--text-light);
     }
 
-    /* ===== TABLE ===== */
     .table-card {
       background: white;
       border-radius: 20px;
@@ -440,7 +437,6 @@
     .scent-tag.lavender { background: #f0ecf8; color: var(--purple); }
     .scent-tag.bundle { background: #fff3cd; color: #856404; }
 
-    /* Status badges */
     .status-badge {
       display: inline-flex;
       align-items: center;
@@ -494,7 +490,6 @@
       text-overflow: ellipsis;
     }
 
-    /* ===== CHARTS SECTION ===== */
     .charts-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -595,7 +590,6 @@
       color: var(--text);
     }
 
-    /* ===== EMPTY STATE ===== */
     .empty-state {
       text-align: center;
       padding: 60px 40px;
@@ -606,7 +600,7 @@
     .empty-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
     .empty-desc { font-size: 14px; }
 
-    /* ===== LOADING ===== */
+    /* laoder */
     .loading-spinner {
       text-align: center;
       padding: 60px;
@@ -627,7 +621,6 @@
       to { transform: rotate(360deg); }
     }
 
-    /* ===== TOAST ===== */
     .toast {
       position: fixed;
       bottom: 28px;
@@ -659,7 +652,7 @@
     }
     .delete-btn:hover { background: var(--danger); color: white; transform: scale(1.1); }
 
-    /* Messages layout */
+    /* messages */
     .messages-layout {
       display: grid;
       grid-template-columns: 280px 1fr;
@@ -776,7 +769,6 @@
     }
     .chat-send-btn:hover { background: var(--deep-mint); }
 
-    /* Confirm modal */
     .confirm-overlay {
       display: none;
       position: fixed;
@@ -854,11 +846,13 @@
       .main { padding: 20px; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
     }
+
+     /* this part bro kill me*/
+    
   </style>
 </head>
 <body>
 
-<!-- ===== LOGIN ===== -->
 <div class="login-screen" id="loginScreen">
   <div class="login-card">
     <div class="login-logo">Sani<span>Scents</span></div>
@@ -869,10 +863,8 @@
   </div>
 </div>
 
-<!-- ===== DASHBOARD ===== -->
 <div class="dashboard" id="dashboard">
 
-  <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-logo">Sani<span>Scents</span></div>
@@ -902,10 +894,8 @@
     </div>
   </aside>
 
-  <!-- Main -->
   <main class="main">
 
-    <!-- OVERVIEW PAGE -->
     <div class="page active" id="page-overview">
       <div class="page-header">
         <div>
@@ -980,7 +970,6 @@
       </div>
     </div>
 
-    <!-- ORDERS PAGE -->
     <div class="page" id="page-orders">
       <div class="page-header">
         <div>
@@ -1028,7 +1017,6 @@
       </div>
     </div>
 
-    <!-- SALES PAGE -->
     <div class="page" id="page-sales">
       <div class="page-header">
         <div>
@@ -1075,8 +1063,6 @@
       </div>
     </div>
 
-
-    <!-- MESSAGES PAGE -->
     <div class="page" id="page-messages">
       <div class="page-header">
         <div>
@@ -1089,13 +1075,11 @@
       </div>
 
       <div class="messages-layout">
-        <!-- Thread list -->
         <div class="thread-list" id="threadList">
           <div class="thread-list-header">Conversations</div>
           <div id="threadItems"><div class="loading-spinner"><div class="spinner"></div>Loading...</div></div>
         </div>
 
-        <!-- Chat area -->
         <div class="chat-area" id="chatArea">
           <div class="chat-empty" id="chatEmpty">
             <div style="font-size:48px;margin-bottom:12px;">💬</div>
@@ -1114,7 +1098,6 @@
       </div>
     </div>
 
-    <!-- MESSAGES PAGE -->
     <div class="page" id="page-messages">
       <div class="page-header">
         <div>
@@ -1150,7 +1133,6 @@
   </main>
 </div>
 
-<!-- Delete Confirm Modal -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
     <div class="confirm-icon">🗑️</div>
@@ -1164,7 +1146,6 @@
 </div>
 
 
-<!-- Delete Confirm Modal -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
     <div class="confirm-icon">🗑️</div>
@@ -1176,12 +1157,11 @@
     </div>
   </div>
 </div>
-<!-- Toast -->
+
 <div class="toast" id="toast"></div>
 
 <script>
-  // ===== CONFIG =====
-  // IMPORTANT: Change this to the key you set in Netlify env vars (ADMIN_SECRET_KEY)
+  // ANDITO YUNG  PASSWORD GUYS THX
   const ADMIN_KEY = 'saniscents-admin-2026';
   const PRICE_BUY1 = 85;
   const PRICE_BOTH = 150;
@@ -1189,7 +1169,6 @@
   let allOrders = [];
   let currentFilter = 'all';
 
-  // ===== LOGIN =====
   function doLogin() {
     const pw = document.getElementById('adminPassword').value;
     if (pw === ADMIN_KEY) {
@@ -1214,7 +1193,6 @@
       new Date().toLocaleDateString('en-PH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   }
 
-  // ===== NAVIGATION =====
   function showPage(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1228,7 +1206,6 @@
     if (page === 'messages') loadMessages();
   }
 
-  // ===== LOAD ORDERS =====
   async function loadOrders() {
     try {
       const res = await fetch('/.netlify/functions/get-orders', {
@@ -1244,7 +1221,6 @@
     }
   }
 
-  // ===== RENDER =====
   function renderDashboard() {
     const orders = allOrders;
     const pending = orders.filter(o => o.status === 'pending');
@@ -1393,7 +1369,6 @@
     document.getElementById('salesOlive').textContent = oliveQty + ' btl';
     document.getElementById('salesLavender').textContent = lavQty + ' btl';
 
-    // Scent bar chart
     const scentData = [
       { label: '🫒 Olive & Milk', value: oliveQty },
       { label: '💜 Lavender Caress', value: lavQty },
@@ -1407,7 +1382,6 @@
         <div class="bar-value">${d.value}</div>
       </div>`).join('');
 
-    // Last 7 days
     const days = [];
     for (let i = 6; i >= 0; i--) {
       const d = new Date();
@@ -1426,7 +1400,6 @@
       </div>`).join('');
   }
 
-  // ===== FILTER ORDERS =====
   function filterOrders(filter, btn) {
     currentFilter = filter;
     document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
@@ -1434,7 +1407,6 @@
     renderOrdersTable(allOrders);
   }
 
-  // ===== UPDATE STATUS =====
   async function updateStatus(orderId, status) {
     if (!status) return;
     try {
@@ -1458,7 +1430,6 @@
     }
   }
 
-  // ===== EXPORT CSV =====
   function exportCSV() {
     const headers = ['Order ID', 'Name', 'Contact', 'Address', 'Scent', 'Quantity', 'Notes', 'Status', 'Date'];
     const rows = allOrders.map(o => [
@@ -1479,7 +1450,6 @@
     showToast('📄 CSV exported!');
   }
 
-  // ===== HELPERS =====
   function esc(str) {
     if (!str) return '—';
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -1522,7 +1492,6 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
-  // ===== DELETE ORDER =====
   let pendingDeleteId = null;
 
   function deleteOrder(orderId) {
@@ -1565,7 +1534,6 @@
     }
   }
 
-  // ===== MESSAGES =====
   let activeThread = null;
 
   async function loadThreads() {
@@ -1574,7 +1542,7 @@
       threadEl.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-title">No orders yet</div></div>';
       return;
     }
-    // Fetch latest message per order for preview
+
     const previews = {};
     await Promise.all(allOrders.map(async o => {
       try {
