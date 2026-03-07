@@ -27,7 +27,6 @@
       min-height: 100vh;
     }
 
-    /* NAV */
     nav {
       position: sticky;
       top: 0;
@@ -45,7 +44,6 @@
     .nav-back { font-size: 13px; font-weight: 700; color: var(--forest); text-decoration: none; display: flex; align-items: center; gap: 6px; padding: 8px 18px; border: 1.5px solid rgba(184,224,210,0.6); border-radius: 100px; transition: all 0.2s; }
     .nav-back:hover { background: var(--mint); border-color: var(--deep-mint); }
 
-    /* MAIN */
     .page-wrap {
       max-width: 680px;
       margin: 0 auto;
@@ -68,7 +66,6 @@
       line-height: 1.6;
     }
 
-    /* LOOKUP CARD */
     .lookup-card {
       background: white;
       border-radius: 24px;
@@ -158,7 +155,6 @@
     .status-fulfilled { background: #d1f2eb; color: #0e6655; }
     .status-cancelled { background: #f8d7da; color: #721c24; }
 
-    /* TRACKER STEPS */
     .tracker {
       padding: 28px 32px;
       border-bottom: 1px solid rgba(184,224,210,0.2);
@@ -230,7 +226,6 @@
     .tracker-step.done .step-label { color: var(--forest); }
     .tracker-step.active .step-label { color: var(--forest); font-weight: 800; }
 
-    /* ORDER DETAILS */
     .order-details {
       padding: 24px 32px;
       border-bottom: 1px solid rgba(184,224,210,0.2);
@@ -248,7 +243,6 @@
     .detail-key { font-size: 13px; color: var(--text-light); font-weight: 600; flex-shrink: 0; }
     .detail-val { font-size: 13px; color: var(--text); font-weight: 700; text-align: right; }
 
-    /* CHAT */
     .chat-section {
       padding: 24px 32px;
     }
@@ -325,7 +319,6 @@
     .chat-msg-btn:hover { background: var(--deep-mint); }
     .chat-msg-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* EMPTY STATE */
     .empty-state {
       text-align: center;
       padding: 60px 20px;
@@ -369,7 +362,6 @@
     <div class="lookup-error" id="lookupError">⚠️ Order not found. Please check your Order ID and try again.</div>
   </div>
 
-  <!-- Result -->
   <div class="order-card" id="orderCard">
 
     <div class="order-card-header">
@@ -381,7 +373,6 @@
       <div class="status-pill" id="resStatusPill">—</div>
     </div>
 
-    <!-- Tracker -->
     <div class="tracker">
       <div class="tracker-title">Order Progress</div>
       <div class="tracker-steps" id="trackerSteps">
@@ -404,7 +395,6 @@
       </div>
     </div>
 
-    <!-- Order Details -->
     <div class="order-details">
       <div class="details-title">Order Details</div>
       <div class="detail-row"><span class="detail-key">Name</span><span class="detail-val" id="resName">—</span></div>
@@ -415,7 +405,6 @@
       <div class="detail-row"><span class="detail-key">Mode of Payment</span><span class="detail-val">Cash on Delivery</span></div>
     </div>
 
-    <!-- Chat -->
     <div class="chat-section">
       <div class="chat-section-title">💬 Message the Seller</div>
       <div class="chat-messages-box" id="chatBox">
@@ -429,7 +418,6 @@
 
   </div>
 
-  <!-- Not found state (shown after bad lookup) -->
   <div class="empty-state" id="emptyState">
     <div class="empty-icon">🔍</div>
     <div class="empty-title">Order Not Found</div>
@@ -442,13 +430,11 @@
   var currentOrderId = null;
   var pollInterval = null;
 
-  // STATUS CONFIG
   var STATUS_STEPS = ['pending', 'confirmed', 'shipped', 'fulfilled'];
   var STATUS_LABELS = { pending: 'Order Placed', confirmed: 'Confirmed', shipped: 'Shipped', fulfilled: 'Delivered', cancelled: 'Cancelled' };
   var STATUS_CLASSES = { pending: 'status-pending', confirmed: 'status-confirmed', shipped: 'status-shipped', fulfilled: 'status-fulfilled', cancelled: 'status-cancelled' };
   var STATUS_EMOJIS = { pending: '⏳', confirmed: '✅', shipped: '🚚', fulfilled: '🎉', cancelled: '❌' };
 
-  // Check URL for orderId param on load
   window.addEventListener('load', function() {
     var params = new URLSearchParams(window.location.search);
     var id = params.get('orderId');
@@ -482,7 +468,6 @@
         await loadMessages();
         document.getElementById('orderCard').style.display = 'block';
         document.getElementById('orderCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // Poll for new messages every 15s
         if (pollInterval) clearInterval(pollInterval);
         pollInterval = setInterval(loadMessages, 15000);
       }
@@ -504,12 +489,10 @@
     document.getElementById('resLocation').textContent = o.location || '—';
     document.getElementById('resAddress').textContent = o.address || '—';
 
-    // Status pill
     var pill = document.getElementById('resStatusPill');
     pill.textContent = (STATUS_EMOJIS[o.status] || '') + ' ' + (STATUS_LABELS[o.status] || o.status);
     pill.className = 'status-pill ' + (STATUS_CLASSES[o.status] || 'status-pending');
 
-    // Tracker steps
     var stepOrder = ['pending', 'confirmed', 'shipped', 'fulfilled'];
     var currentIdx = o.status === 'cancelled' ? -1 : stepOrder.indexOf(o.status);
 
@@ -526,7 +509,6 @@
       }
     });
 
-    // If cancelled, show special indicator
     if (o.status === 'cancelled') {
       var cancelStep = document.getElementById('step-fulfilled');
       if (cancelStep) {
