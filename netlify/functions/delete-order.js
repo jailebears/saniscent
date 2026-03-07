@@ -1,6 +1,6 @@
-// SaniScents -- delete-order.js
 // Database: Supabase
-// Required Netlify env vars: SUPABASE_URL, SUPABASE_SERVICE_KEY, ADMIN_SECRET_KEY
+// env vars: SUPABASE_URL, SUPABASE_SERVICE_KEY, ADMIN_SECRET_KEY
+// i love my life
 
 const ADMIN_KEY = process.env.ADMIN_SECRET_KEY || 'saniscents-admin-2026';
 
