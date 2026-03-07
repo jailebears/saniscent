@@ -1,7 +1,3 @@
-// SaniScents -- track-order.js
-// Public endpoint - customers look up their order by ID
-// Required env vars: SUPABASE_URL, SUPABASE_SERVICE_KEY
-
 exports.handler = async (event) => {
   const cors = {
     'Content-Type': 'application/json',
